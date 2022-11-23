@@ -60,6 +60,7 @@ console.log(x) // 18
 ```js
 person1.sayName() // 'Yang Shan'
 ```
+### 循環物件的方法
 
 # 創建物件的模式
 太好了，現在你已經會創建物件了  
@@ -74,7 +75,7 @@ person1.sayName() // 'Yang Shan'
 工廠模式就是把每個**函數**都**當成一個工廠**  
 在**工廠內部**自己**創建一個物件**
 並且輸出物件
-```
+```js
 function createPerson(name, age, job) {
   let o = new Object();
   o.name = name;
@@ -103,7 +104,7 @@ Object和Array就是JS內建的原生構造函數
 我們也可以自定義一個構造函數
 
 使用方法為
-```
+```js
 function Person(name, age, job) {
 	this.name = name;
 	this.age = age;
@@ -127,3 +128,43 @@ console.log(shan instanceof Person) // true
 **如果有一個物件是用 Person 創造出來的，就稱這個物件為 Person 的實體(instance)**
 
 構造函數習慣用**大寫開頭**，這樣有助於後人來分別是構造函數還是普通函數
+
+### 構造函數的特性
+**構造函數仍然是一個函數**  
+他並不是一個JS裡特殊的語法，任何函數只要使用`new`操作調用就是構造函數，不使用`new`就是普通函數  
+來看看`new`
+```js
+function Person(name, age) {
+  this.name = name;
+  this.age = age;
+  this.sayName = function() {
+    console.log(this.name)
+  }
+}
+let person1 = new Person('thisWeb', 18) // 作為構造函數使用
+Person('Shan', 20); // 作為普通函數使用
+window.sayName(); // "Shan" 添加到 window 中
+
+```
+### 構造函數的問題
+
+構造函數的優點前面說完了，該來說說問題了！
+在構造函數裡面宣告的函數，會在每一個用構造函數創建的物件(稱為實體)上都宣告一次，造成資源的浪費  
+所以我們用 原型（prototype） 來解決這個問題(終於說到原型了！)  
+```js
+function  Person() {
+	Person.prototype.name = 'Nicholas';
+	Person.prototype.age = 25;
+	Person.prototype.sayName = function() {
+    console.log(this.name)
+  }
+}
+
+let person1 = new Person(); 
+person1.sayName(); // "Nicholas" 
+let person2 = new Person(); 
+person2.sayName(); // "Nicholas" 
+console.log(person1.sayName == person2.sayName); // true
+```
+
+接著介紹到 原型、繼承、類
