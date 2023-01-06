@@ -211,10 +211,10 @@ console.log(p1.__proto__ === Person.prototype) // true
 所以實例是用`__proto__`這個屬性來通往倉庫(原型物件)的
 ### 所有函數都有prototype屬性，那Object也有嗎？
 記得前面提到創建物件的方法有一個是用 `let person = new Object()` 嗎 
-不知道你會不會好奇，這個Object也是構造函數嗎？那它也有prototype屬性嗎？　　
-沒有錯，你想的沒有錯，它是構造函數也有prototype屬性  
-而且很酷的是，所有原型鏈最後都會指到這裡
-換句話說
+不知道你會不會好奇，這個Object也是構造函數嗎？那它也有prototype屬性嗎？  
+你想的沒有錯，它是構造函數也有prototype屬性  
+而且很酷的是，所有原型鏈最後都會指到Object的prototype  
+換句話說  
 Person的原型物件也是物件實例，所以他也有__proto__屬性，指向Object.prototype  
 
 ```js
@@ -281,34 +281,224 @@ console.log(person1.friends === person2.friends); // true
 
 ### 原型鏈和繼承
 之前說每個構造函數都會有一個原型物件  
-那如果這個原型物件也是另一個構造函數的實例呢？ 來看看是甚麼意思  
-假設我們現在要複製很多個 thisweb (複製人)  
-但每個複製人的年紀不一樣
+那如果這個原型物件也是另一個構造函數的實例呢？ 來看看是甚麼意思 
+假設現在有很多個叫做小王的人
+但每個小王的id不一樣
 ```js
-function Thisweb() {
-  this.name = 'thisweb';
+function Person() {
+  this.name = "小王";
 }
-Thisweb.prototype.sayName = function() {
+Person.prototype.sayName = function() {
     console.log(this.name)
 }
-function ThiswebAge(age) {
-  this.age = age;
+function Wang(id) {
+  this.id = id;
 }
-ThiswebAge.prototype = new Thisweb();
+Wang.prototype = new Person();
 
 
-let thisweb1 = new ThiswebAge();
-thisweb1.sayName(); // thisweb
+let wang1 = new Wang(1);
+wang1.sayName(); // 小王
+console.log(wang1.id) // 1
 
 ```
-複製人1號在找名字時會先找自己的構造函數(ThiswebAge)  
-找不到就往自己的原型物件找(Thisweb)  
-又找不到就只好找原型物件的原型物件(Thisweb.prototype)，最後找到了  
+小王1號在找名字時會先找自己的構造函數(Wang)  
+找不到就往自己的原型物件找(Wang.prototype === Person)  
+又找不到就只好找原型物件的原型物件(Person.prototype)，最後找到了  
 這就是**原型鏈**和**繼承**  
-ThiswebAge 繼承了 Thisweb 的屬性和函數
+Wang 繼承了 Person 的屬性和函數
 
-簡單說，繼承就是一個構造函數的原型是另一個構造函數   
+簡單說，繼承就是一個構造函數的**原型**是另一個構造函數   
 就會繼承其屬性和函數
 
+### 原型與繼承關係
+原型與實例的關係可以通過兩種方式來確定
+1. 用 instanceof 操作符，如果一個實例的原型鏈中出現過相應的構造函數，則 instanceof 返回 true
+```js
+console.log(wang1 instanceof Wang); // true 
+console.log(wang1 instanceof Person); // true 
+```
+
+### 默認原型
+那你會不會好奇，這個原型鏈的最後一個是甚麼  
+其實就是前面提到的Object的prototype  
+`let a = new Obejct()` 這個  
+所以JS裡所所有東西都可以用toString()、valueOf()等函式
+```js
+function Test() {}
+console.log(Test.prototype.__proto__ === Object.prototype); // true
+console.log(Test.prototype.__proto__.constructor === Object); // true
+```
+
+### 繼承
+居然原型沒辦法很解決共同屬性的問題  
+那繼承可以怎麼解決呢？  
+最常用的方法是，利用call改變this的指向  
+來看看是甚麼意思呢
+```js
+function Person(age){  
+  this.age = age;
+  this.name = '小王'
+  this.hobbies = ['coding', 'design']
+} 
+Person.prototype.sayName = function() { 
+ console.log(this.name); 
+}
+
+function Wang(age, id){ 
+ // 繼承屬性
+ Person.call(this, age); 
+ this.id = id; 
+} 
+
+// 繼承函數
+Wang.prototype = new Person(); 
+
+let Wang1 = new Wang(20, 1); 
+Wang1.hobbies.push('game') 
+console.log(Wang1.hobbies); // coding design game 
+Wang1.sayName(); // 小王; 
+
+let wang2 = new Wang(23, 2); 
+console.log(wang2.hobbies); // coding design 
+wang2.sayName(); // 小王
+```
+這樣就可以只繼承函數而彼此的屬性是互不干擾的  
+(簡單說，call()的第一個參數可以改變this的指向)
+(以這裡為例 call的第一個參數是指Wang)
+
+```js
+// 這裡可以提到一下 app call bind
+```
+
 ---  
-接著介紹到 類
+# 類 class
+終於講到ES6新增很重要的寫法了  
+經過前面原型鏈和繼承的學習，你會發現原型鏈的寫法很不友善  
+於是有了 class  的誕生  
+要先知道 class 只是一個語法糖，簡單說就是代替之前說的原型鏈的寫法  
+但是原理是一模一樣的  
+
+### class 怎麼宣告
+不管是聲明式還是表達式都可以
+```js
+class Person {}; // 類聲明式
+const Animal = class {} // 類表達式
+```
+和函數一樣 聲明式會被 hoisting(提升)，表達式則不會  
+而函數和類最不一樣的地方是  
+函數不受塊作用域影響，而類受到塊作用域限制
+```js
+{ 
+ function FunctionDeclaration() {} 
+ class ClassDeclaration {} 
+} 
+console.log(FunctionDeclaration); // FunctionDeclaration() {} 
+console.log(ClassDeclaration); // ReferenceError: ClassDeclaration is not defined
+```
+### 類的構造函數
+前面說過類的原理跟構造函數、原型鏈一模一樣  
+所以類也會有構造函數，其實是一樣的東西
+```js
+class Person { 
+ constructor(name, age) { 
+  this.name = name;
+  this.age = age;
+ } 
+} 
+function Animal(name, age) {
+  this.name = name;
+  this.age = age;
+}
+let thisWeb = new Person('thisWeb', 18); 
+let duan = new Animal('duan', 1);
+console.log(thisWeb) // Person {name:'thisWeb', age: 18}
+```
+有沒有發現跟構造函數差不多，只是類constructor()當作構造函數
+不過最不同的地方師，類一定要用 new 操作符，如果沒有用的話會直接報錯  
+這一點倒是比構造函數好
+(duan 是我家貓咪的名字XD)
+
+而類也跟普通的構造函數一樣，可以用`instanceof`檢查實例和類的關係
+```js
+class Person { 
+ constructor() { 
+	 
+	}
+ } 
+let p1 = new Person();
+console.log(p1 instanceof Person); // true 
+```
+
+### 類也是函數
+前面講了那麼多，相信你也有發現類跟函數蠻像的，其實它們可以說是一模一樣
+JS中是沒有一種類別(type)叫做類(class)  
+那類到底是甚麼呢？直接看看就知道了
+```js
+class Person {}
+console.log(typeof Person) // function
+```
+欸居然還是函數  
+沒錯，所以類跟構造函數有一樣的行為，一樣有prototype  
+prototype裡一樣有constructor可以只回類本身  
+```js
+class Person{} 
+console.log(Person.prototype); // { constructor: f() } 
+console.log(Person === Person.prototype.constructor); // true
+
+let p = new Person(); 
+console.log(p instanceof Person); // true
+```
+
+### 類的原型
+類的語法可以很簡單的定義存在於原型上的屬性  
+```js
+class Person {
+  constructor(name) {
+    this.name = name;
+  }
+
+  // 定義在原型上
+  sayName() {
+    console.log(this.name);
+  }
+}
+```
+上面的程式碼和下的構造函數的寫法一樣  
+```js
+function Person(name) {
+  this.name = name;
+}
+Person.prototype.sayName = function() {
+  console.log(this.name);
+}
+```
+不過很明顯感覺 class 更友善一點對吧
+
+要注意的是下面這種情況
+```js
+class Person {
+  constructor(name) {
+    this.name = name;
+  }
+
+  // 定義在原型上
+  sayName() {
+    console.log(this.name);
+  }
+
+  // 定義在實例上
+  let hobbits = [coding, design];
+}
+```
+因為在原型鏈上定義屬性值是一種不太好的寫法，所以類不支持。
+不過如果真的要的話還是可以直接寫在原型上
+```js
+Person.prototype.hobbits = [coding, design]
+```
+
+### 類繼承
+
+
+ig 的寫法感覺可以直接比較 class 和 構造函數的不同  
+直接兩個放在一起比較 像上面那樣 在慢慢拆解
