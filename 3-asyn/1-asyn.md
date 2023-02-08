@@ -41,7 +41,7 @@ function double(value) {
 }
 let x = 3;
 double(x);
-console.log(x + 1)
+console.log(x + 1);
 // 6
 // 4
 ```
@@ -69,7 +69,7 @@ console.log(x + 1);
 這時就可以用到非同步的觀念
 ```js
 function getSomeData(url) {
-  // ...
+  // 獲取 data
 }
 
 getSomeData(url)
@@ -88,14 +88,14 @@ getSomeData(url) 是去後端提供的網址取得資料
 ```js
 
 function getSomeData(url, callback) {
-  // ...
+  // 獲取 data
 
   callback(yourData);
 }
 
 getSomeData(url1, (data1) => { 
-  console.log(data1)
-  getSomeData(data1.url)
+  console.log(data1);
+  getSomeData(data1.url);
 })
 
 // other operation
@@ -111,7 +111,7 @@ getSomeData(url1, (data1) => {
 就會變成
 ```js
 function getSomeData(url, callback) {
-  // ...
+  // 獲取 data
 
   callback(yourData);
 }
@@ -146,9 +146,9 @@ let a = 10;
 setTimeout(() => {
   a++;
 }, 0)
-console.log(a)
+console.log(a);
 // 10
 ```
 所以在同步的程式碼是碰不到異步的程式碼的 
 
-# Promise
+

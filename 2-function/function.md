@@ -560,8 +560,9 @@ Immediately Invoked Function Expression
 })('hi')
 // hi
 ```
-使用 IIFE 可以模擬塊級作用域  
-現在比較少看到是因為 ES6 出現了 let 和 const
+不過若只是這樣，顯然沒有太大用處  
+但是！  
+他最厲害的地方是可以用來模擬塊級作用域像是這樣  
 ```js
 (function () { 
  for (var i = 0; i < 1; i++) { 
@@ -570,7 +571,9 @@ Immediately Invoked Function Expression
 })(); 
 console.log(i); // 錯誤
 ```
-在出現 let 和 const 前這是蠻常見的用法
+在 ES6 前就可以用這種方法來解決 var 的問題
+現在比較少看到是因為 ES6 出現了 let 和 const
+
 現在只要
 ```js
 for (let i = 0; i < 1; i++) {
