@@ -54,6 +54,28 @@ Promise.all([p1, p2, p3])
 // 'err'
 ```
 
+## Promise.allSettled()
+這是 ES11 新增的語法  
+為了解決 `.all` 的缺點  
+`Promise.all()` 失敗的時候只會返回失敗的訊息  
+但有時候我們可能成功失敗都需要拿到，就可以使用 `Promise.allSettled()`  
+他會返回陣列並包含所有的訊息
+拿前面的相同例子
+```js
+let p1 = createPromise(1, 'p1');
+let p2 = createPromise(2, 'p2', false);
+let p3 = createPromise(3, 'p3');
+
+Promise.allSettled([p1, p2, p3])
+  .then((res) => console.log(res))
+  .catch((err) => console.log(err));
+// [
+// {status: 'fulfilled', value: 'p1'}, 
+// {status: 'rejected', reason: 'err'},
+// {status: 'fulfilled', value: 'p3'} 
+// ]
+```
+
 ## Promise.race()
 和 'all()' 相反  
 `race()` 是誰先執行完就回傳誰的結果  

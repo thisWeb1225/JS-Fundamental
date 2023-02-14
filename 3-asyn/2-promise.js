@@ -70,3 +70,33 @@ let p = new TrackablePromise((resolve, reject, notify) => {
   }
   countdown(5);
 });
+
+let p10 = new Promise((resolve, reject) => {
+  setTimeout(resolve, 1000, 3);
+});
+
+p.then((x) => {
+  console.log(x);
+}).catch((err) => {
+  console.log(err);
+}); // 一秒後 3
+
+function createPromise(seconds, data, success = true) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      // console.log(data);
+      if (success) resolve(data);
+      reject('err');
+    }, seconds * 1000);
+  });
+}
+
+async function asyncGetData() {
+  try {
+    let p11 = await createPromise(1, '1', false);
+  } catch {
+    console.log(err);
+  }
+}
+
+asyncGetData();
