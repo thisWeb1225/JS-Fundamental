@@ -1,13 +1,15 @@
 # Promise
 先來對 Promise 有些認識
-### Promise 是甚麼？
+## Promise 是甚麼？
 Promise 是一個對 **還未有結果的事物** 的一個替身，他不是前端才有的東西。  
-前面有說，我們不知道非同步的成是什麼時候會回傳東西過來  
-這種不確定性讓我們沒辦法對他有很好的操作  
-例如他傳回來失敗我們也無法知道，但 Promise 這個替身就可以很好的解決這個問題
+
 
 ## 為甚麼要有 Promise？
-前面提到用回調函數來接收非同步回傳過來的資料會有**回調地獄的問題**  
+前面有說，我們不知道非同步的成是什麼時候會回傳東西過來  
+這種不確定性讓我們沒辦法對他有很好的操作  
+例如他傳回來失敗我們也無法知道，但 Promise 這個替身就可以很好的解決這個問題  
+
+且若用回調函數來接收非同步回傳過來的資料會有**回調地獄的問題**  
 除了回調地獄，回調函數也沒有一個規範，每個人的寫法都不一樣，造成使用和閱讀上的困難。
 為了解決這些問題，有了 Promise 的誕生  
 (大陸翻譯叫做 **期約**，台灣好像大多數都直接說 Promise)  
@@ -65,7 +67,7 @@ let p1 = createPromise(true);
 console.log(p1); // Promise {<fulfilled>: '資料回傳成功！'}
 
 let p2 = createPromise(false);
-console.log(p2) //  {<rejected>: '資料回傳失敗！'}
+console.log(p2) // Promise {<rejected>: '資料回傳失敗！'}
 ```
 上面的 resolve() 和 reject() 就是告訴 promise 現在是成功還是失敗  
 有發現我們 console 出來後有顯示 fulfilled 和 rejected 嗎？　　
@@ -80,13 +82,18 @@ p1 = createPromise(true)
   .then(data => console.log(data));
   // '資料回傳成功！'
 ```
+`.then( )` 裡面要放一個函數
+而這個函數的參數就是 resolve() 裡的資料
+
 那這個 `.then` 到底是甚麼意思？ 
 還記得上次回調函數的方式嗎，取得第一筆資料，**然後**再用第一筆資料的地址抓第二筆資料  
 這個**然後**就是 `.then()`   
-取得資料 然後 做...  
+  
 就像是 我先吃早餐，**然後**上班的 這個然後
+這也是 promise 厲害的地方，他可以等 resolve() 結束
+然後再做其他事情
 
-## 如果回傳資料失敗怎麼辦？ .catch
+## 如果回傳資料失敗怎麼辦？ .catch()
 前面的 `.then()` 是成功才會調用，這也很好理解，都失敗了還有甚麼然後勒哈哈
 
 所以我們要用 `.catch()` 來處理失敗的狀況  
@@ -95,8 +102,9 @@ catch 就是抓住錯誤的意思
 p2 = createPromise(false)
   .then(data => console.log(data))
   .catch(err => console.log(err));
+  // '資料回傳失敗'
 ```
-只要發生錯誤，就會直接執行 `catch()` 不管 `.then()`
+只要發生錯誤，就會直接執行 `catch()` 而跳過所有的 `.then()`
 
 ## 連鎖 promise 
 有時候我們 promise 成功後想要執行東西  

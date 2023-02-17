@@ -2,8 +2,9 @@
 除了 `resolve()` 和 `reject()` 以外  
 promise 還有其他好用的函數像是
 1. all()
-2. race()
-3. finally()
+2. allSettled()
+3. race()
+4. finally()
 
 和上次提到的 promise 連鎖不同  
 `all()` 和 `race()` 是利用合成的方式來處理 promise  
@@ -15,9 +16,14 @@ promise 還有其他好用的函數像是
 function createPromise(seconds, data, success = true) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      // console.log(data);
-      if (success) resolve(data);
-      reject('err');
+      
+      if (success) {
+        resolve(data);
+      }
+      else {
+        reject('err');
+      }
+      
     }, seconds * 1000);
   });
 }
@@ -37,9 +43,14 @@ Promise.all([p1, p2, p3]).then(res => console.log(res))
 function createPromise(seconds, data, success = true) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      // console.log(data);
-      if (success) resolve(data);
-      reject('err');
+      
+      if (success) {
+        resolve(data);
+      }
+      else {
+        reject('err');
+      }
+      
     }, seconds * 1000);
   });
 }
@@ -56,9 +67,10 @@ Promise.all([p1, p2, p3])
 
 ## Promise.allSettled()
 這是 ES11 新增的語法  
-為了解決 `.all` 的缺點  
-`Promise.all()` 失敗的時候只會返回失敗的訊息  
-但有時候我們可能成功失敗都需要拿到，就可以使用 `Promise.allSettled()`  
+是為了解決 `Promise.all()` 的缺點  
+
+前面說 `Promise.all()` 失敗的時候只會返回失敗的訊息  
+但有時候我們可能成功失敗的資料都需要拿到，這時就可以使用 `Promise.allSettled()`  
 他會返回陣列並包含所有的訊息
 拿前面的相同例子
 ```js
@@ -127,3 +139,38 @@ p1.then(() => createPromise(1, 'p2'))
   .finally(() => console.log('done'));
 ```
 不管成功失敗，最後都會回傳 done
+
+## 補充 .then()
+其實 .then 最多可以傳入兩個函數當作參數
+第一個是接收成功的資料，第二個接受失敗的資料  
+```js
+function onResolved(id) { 
+ setTimeout(console.log, 0, id, 'resolved');
+} 
+function onRejected(id) { 
+ setTimeout(console.log, 0, id, 'rejected'); 
+} 
+let p1 = new Promise((resolve, reject) => setTimeout(resolve, 3000)); 
+let p2 = new Promise((resolve, reject) => setTimeout(reject, 3000)); 
+
+p1.then(() => onResolved('p1'), 
+ () => onRejected('p1')); 
+p2.then(() => onResolved('p2'), 
+ () => onRejected('p2')); 
+
+// 3秒後
+// p1 resolved
+// p2 rejected
+```
+和 .catch() 不同的是
+.catch() 會跳過所有的 .then()
+而 .then() 失敗之後還可以接其他的 .then 繼續執行其它函數
+
+## 小結
+這樣 promise 就差不多講完了  
+希望你對 promise 有更了解一點  
+我覺得把 promise 當作替身的想法挺好理解的  
+你覺得呢  
+
+下一篇要來說說 async / await 
+若是懂了 promise 那 await 的概念也很好理解了

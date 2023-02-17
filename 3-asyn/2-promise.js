@@ -100,3 +100,7 @@ async function asyncGetData() {
 }
 
 asyncGetData();
+
+p.then(() => console.log('second'))
+  .then(() => console.log('third'))
+  .then(() => console.log('fourth'));
