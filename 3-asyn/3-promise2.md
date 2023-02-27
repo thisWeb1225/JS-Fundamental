@@ -168,8 +168,9 @@ p2.then(() => onResolved('p2'),
 
 ## 小結
 這樣 promise 就差不多講完了  
-希望你對 promise 有更了解一點  
-我覺得把 promise 當作替身的想法挺好理解的  
+希望你對 promise 有更了解一點
+
+我覺得把 promise 當作一個替身的想法挺好理解的  
 你覺得呢  
 
 下一篇要來說說 async / await 

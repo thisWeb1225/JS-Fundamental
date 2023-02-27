@@ -110,7 +110,9 @@ document.getElementById('button').addEventListener("click", () => {
 ```
 
 那如果使用 defineProperty 要怎麼寫呢
-我們可以封裝一個 watch 函數
+我們先定義一個 count 物件  
+然後封裝一個 watch 函數  
+以後需要監聽某些物件時就可以直接調用這個 watch 函數
 ```js
 const button = document.getElementById('button');
 const container = document.getElementById('container');
@@ -123,7 +125,7 @@ button.addEventListener('click', function () {
 });
 
 (function () {
-  function watch(obj, name, func) {
+  function watch(obj, name, callback) {
     let value = obj[name];
 
     Object.defineProperty(obj, name, {
@@ -132,7 +134,7 @@ button.addEventListener('click', function () {
       },
       set: function (newValue) {
         value = newValue;
-        func(value);
+        callback(value);
       },
     });
   }
@@ -151,4 +153,7 @@ watch(count, 'num', (newValue) => {
 
 雖然感覺變複雜了，但其實我們寫了一個超級無敵迷你版的 Vue 哈哈哈
 
-defineProperty 是 vue2 數據綁定的底層原理，不過因為 defineProperty 能做到的事情不多，所以 Vue3 就數據綁定的原理改成了之後要講的 Proxy 了
+## defineProperty 的問題
+defineProperty 是 vue2 數據綁定的底層原理
+不過因為 defineProperty 能做到的事情不多，而且當有多個屬性時，需要用迴圈去讓攔截每個屬性，非常麻煩  
+所以 Vue3 就數據綁定的原理改成了之後要講的 Proxy 了

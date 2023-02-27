@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Proxy</title>
+  </head>
+  <body>
+    <script>
+const obj = {
+  name: 'thisWeb',
+  age: 18
+};
+
+const handler = {
+  get(obj, key) {
+    console.log('getter', key, obj[key]);
+    return obj[key]
+  },
+  set(obj, key, newVal) {
+    console.log('setter', key, obj[key], newVal);
+    obj[key] = newVal
+  }
+};
+
+const proxy = new Proxy(obj, handler);
+
+      proxy.name; // getter name thisWeb
+      proxy.age = 180 // setter age 18 180
+    </script>
+  </body>
+</html>
