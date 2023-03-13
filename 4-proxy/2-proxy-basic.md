@@ -2,7 +2,7 @@
 上次說完 defineProperty()，他可以攔截我們對物件存取時的操作，達到監聽的效果，Vue2 就是用 defineProperty() 實現響應式設計，
 但我們手動操作後可以發現要監聽物件蠻麻煩的，如果一個物件有多個屬性，就要先寫一堆的 defineProperty() 或者迴圈，但 Proxy 就不用了。  
 
-Proxy 提供了開發者更多可以操作對象的方式，所以 Vue3 響應式底層就從 defineProperty() 改成 Proxy 了。
+Proxy 提供了開發者更多可以操作物件的方式，所以 Vue3 響應式底層就從 defineProperty() 改成 Proxy 了。
 
 ## 創建 Proxy
 要創建一個空的 Proxy，可以傳入一個簡單的物件字面量  
@@ -72,7 +72,7 @@ obj.age; // 180
 * defineProperty() 是針對物件裡的一個屬性去做攔截
 
 ## 再寫一次響應式設計
-還記得上次用 defienProperty() 寫響應式物件的方式嗎  
+還記得上次用 defienProperty() 寫響應式物件的方式嗎   
 這次我們用 Proxy 重寫一次
 ```js
 const button = document.getElementById('button');
@@ -149,6 +149,31 @@ const proxy = new Proxy(myTarget, {
 Object.keys(proxy); 
 // you use the Object.keys() 
 ```
+
+在這邊統整常用的攔截方法
+1. get(target, property, receiver)：攔截對目標物件的讀取屬性操作，常用於處理屬性不存在的情況，或者實現代理模式等。
+
+2. set(target, property, value, receiver)：攔截對目標物件的設置屬性操作，常用於對屬性賦值進行檢查或者修改，或者實現代理模式等。
+
+3. has(target, property)：攔截對目標物件使用 in 運算符判斷屬性是否存在的操作，返回布爾值。
+
+4. deleteProperty(target, property)：攔截對目標物件使用 delete 運算符刪除屬性的操作，返回布爾值表示刪除是否成功。
+
+5. apply(target, thisArg, args)：攔截對目標物件的函數調用操作，常用於對函數調用進行權限控制、參數檢查或者拦截等。
+
+6. construct(target, args, newTarget)：攔截對目標物件使用 new 運算符創建實例的操作，返回值為一個物件。
+
+7. getPrototypeOf(target)：攔截對目標物件使用 Object.getPrototypeOf 方法獲取原型的操作，返回值為一個物件或者 null。
+
+8. setPrototypeOf(target, proto)：攔截對目標物件使用 Object.setPrototypeOf 方法設置原型的操作，返回布爾值表示是否成功。
+
+9. defineProperty(target, property, descriptor)：攔截對目標物件使用 Object.defineProperty 方法定義屬性的操作，返回布爾值表示是否成功。
+
+10. getOwnPropertyDescriptor(target, property)：攔截對目標物件使用 Object.getOwnPropertyDescriptor 方法獲取屬性描述符的操作，返回值為一個物件或者 undefined。
+
+11. preventExtensions(target)：攔截對目標物件使用 Object.preventExtensions 方法禁止擴展的操作，返回布爾值表示是否成功。
+
+12. isExtensible(target)：攔截對目標物件使用 Object.isExtensible 方法判斷物件是否可擴展的操作，返回布爾值。
 
 總之這些方法可以針對某些的行為去做攔截  
 進而達到你想達到的效果  
