@@ -1,0 +1,1 @@
+# 區塊作用域 (block scope) 和 暫時性死區 (temporal dead zone)
