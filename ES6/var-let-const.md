@@ -31,7 +31,7 @@ hoisting() // undefined
 
 // 等同於
 
-funciton hoisting() {
+function hoisting() {
   var b;
   console.log(b);
   b = 2;
@@ -76,6 +76,16 @@ c = 2;
 // Uncaught TypeError: Assignment to constant variable.
 ```
 會直接報錯。
+
+除了不能更改值以外，要注意用 `const` 宣告變數的同時就要賦值了：
+```js
+// 錯誤
+const d;
+d = 1;
+
+// 正確
+const d = 1;
+```
 
 `const` 的好處是可以告訴其它工程師說，這個值是固定的，不能更改，也更增加程式的嚴謹性，在宣告不需要更改值的變數時，使用 const 是好習慣喔。
 
