@@ -19,10 +19,12 @@ JS 在**一開始**被設計只能在瀏覽器運行，所以每個瀏覽器都�
 ## JavaScript 和 ECMAScript(ES) 的差別是什麼？
 在之後學 JavaScript 的過程，會常常看到像 ES5、ES6 等名詞，這個 ES 就是 EMCAScript，他是 JavaScript 的規範，定義了 JS 的語法等細節，為甚麼要特定規範 JS ，是因為要確保在我們在不同的環境下都能順利運行 JS，而現在最新的 ES 規範是 ESMAScript 2022。
 
+可以簡單把 ES 想像成類似程式版本一樣的東西，每個版本都會更新新的功能，所以每個版本的 ES 都會有新的 JS 規範。
+
 ## 學習 JavaScript 的資源
 在最後推薦幾個學習 JavaScript 的免費資源：
 1. [W3S](https://www.w3schools.com/js/default.asp)
 2. [MDN](https://developer.mozilla.org/zh-TW/docs/Learn/JavaScript)
 3. [菜鳥教程](https://www.runoob.com/js/js-tutorial.html)
 
-這些網站都有很詳細的教學，希望能幫助到你!
+這些網站都有很詳細的教學，我之後也會寫一系列的 JS 中文教學，希望能幫助學習前端的初學者。
