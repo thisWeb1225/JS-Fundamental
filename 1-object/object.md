@@ -100,7 +100,7 @@ let yang = createPerson("yang", 22, "webDesign");
 **構造函數模式**
 
 ## 構造函數模式
-Object和Array就是JS內建的原生構造函數  
+`Object` 和 `Array` 就是JS內建的原生構造函數，如果你還記得的話，宣告陣列的其中一個方法就是 `let arr = new Array()`  
 我們也可以自定義一個構造函數
 
 使用方法為
