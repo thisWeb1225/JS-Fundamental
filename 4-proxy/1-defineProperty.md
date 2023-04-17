@@ -143,7 +143,7 @@ watch(count, 'num', (newValue) => {
   container.innerHTML = newValue;
 });
 ```
-上面的程式碼，我們一開始先宣告一個 count 物件，並且在點擊按鈕時增加裡面 num 屬性，然後我們用了一個立即執行函數 watch 並掛載到 window 上，還記得他是幹嘛的嗎，忘記趕快去複習，簡單複習一下用立即執行函數是為了避免變量汙染，然後用　Object.defineProperty 方法為物件的指定屬性 num 定義了 getter 和 setter，當屬性被讀取或更改時，會觸發對應的 getter 和 setter 方法，達到監聽對象屬性的效果。  
+上面的程式碼，我們一開始先宣告一個 count 物件，並且在點擊按鈕時增加裡面 num 屬性，然後我們用了一個立即執行函數 watch 並掛載到 window 上，還記得他是幹嘛的嗎，簡單複習一下用立即執行函數是為了避免變量汙染，然後用　Object.defineProperty 方法為物件的指定屬性 num 定義了 getter 和 setter，當屬性被讀取或更改時，會觸發對應的 getter 和 setter 方法，達到監聽對象屬性的效果。  
 
 雖然感覺變複雜了，但其實我們寫了一個超級無敵迷你版的 Vue 哈哈哈。
 

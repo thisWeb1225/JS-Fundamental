@@ -1,17 +1,19 @@
-# proxy 幾種好用的模式
+# proxy 代理 5 個好用的技巧
 
-## 跟蹤屬性訪問
+## 1. 跟蹤屬性訪問
 通過 `get`、`set`、`has` 等操作，可以知道目標物件屬性什麼時候被訪問、查詢:
 
 ```js
 const user = { 
   name: 'Jake' 
 }; 
+
 const proxy = new Proxy(user, { 
   get(target, property, receiver) { 
     console.log(`Getting ${property}`); 
     return Reflect.get(...arguments); 
   }, 
+
   set(target, property, value, receiver) { 
     console.log(`Setting ${property} = ${value}`); 
     return Reflect.set(...arguments); 
@@ -21,7 +23,7 @@ proxy.name; // Getting name
 proxy.age = 27; // Setting age = 27
 ```
 
-## 隱藏屬性
+## 2. 隱藏屬性
 代理內部的程式碼在外部是不可見的，因此要隱藏目標物件上的屬性也輕而易舉:
 
 ```js
@@ -31,6 +33,7 @@ const targetUser = {
  age: 63, 
  hobbies: 'codding' 
 }; 
+
 const proxyUser = new Proxy(targetUser, { 
   get(target, property) { 
     if (hiddenProperties.includes(property)) { 
@@ -48,23 +51,22 @@ const proxyUser = new Proxy(targetUser, {
     } 
   } 
 }); 
+
 // get() 
 console.log(proxyUser.age); // undefined 
 console.log(proxyUser.hobbies); // undefined 
 console.log(proxyUser.name); // thisweb 
-// has() 
-console.log('age' in proxyUser); // false 
-console.log('hobbies' in proxyUser); // false 
-console.log('name' in proxyUser); // true 
+
 ```
 
-## 屬性驗證
+## 3. 屬性驗證
 因為所有附值操作都會觸發 `setter`，所以可以在內部驗證屬性來決定是否允許附值:
 
 ```js
 const targetUser = { 
   id: 0 
 }; 
+
 const proxyUser = new Proxy(targetUser, { 
   set(target, property, value) { 
     if (typeof value !== 'number') {
@@ -82,7 +84,7 @@ proxyUser.id = '2';
 console.log(proxyUser.id); // the value must be number 
 ```
 
-## 函數和構造函數的參數驗證
+## 4. 函數和構造函數的參數驗證
 代理除了可以對物件屬性進行保護或驗證以外，也可以對函數或構造函數進行審查，因為在 JS 中，函數也是一種特殊的物件，因此可以使用 `apply` 來進行攔截，比如以下有一個函數會返回陣列中的中間值，我們可以利用代理來確保傳入的參數型別一定是 `int`，否則拋出錯誤: 
 
 ```js
@@ -128,7 +130,7 @@ const user2 = new ProxyUser();
 // Error: User cannot be instantiated without id 
 ```
 
-## 數據綁定和可觀察物件
+## 5. 數據綁定和可觀察物件
 通過代理可以在運行中，把原本不相關的物件連結在一起操作，例如創建實例時，自動在將實例放在一個陣列裡面: 
 ```js
 const userList = []; 
