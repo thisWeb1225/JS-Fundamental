@@ -60,7 +60,7 @@ console.log(proxyUser.name); // thisweb
 ```
 
 ## 3. 屬性驗證
-因為所有附值操作都會觸發 `setter`，所以可以在內部驗證屬性來決定是否允許附值:
+因為所有賦值操作都會觸發 `setter`，所以可以在內部驗證屬性來決定是否允許賦值:
 
 ```js
 const targetUser = { 
