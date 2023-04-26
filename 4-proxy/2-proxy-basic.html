@@ -5,29 +5,49 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Proxy</title>
+    
   </head>
   <body>
+
+    <button id="button">click</button>
+    <div id="container"></div>
     <script>
-const obj = {
-  name: 'thisWeb',
-  age: 18
+const button = document.getElementById('button');
+const container = document.getElementById('container');
+
+const count = {
+  value: 0,
 };
 
-const handler = {
-  get(obj, key) {
-    console.log('getter', key, obj[key]);
-    return obj[key]
-  },
-  set(obj, key, newVal) {
-    console.log('setter', key, obj[key], newVal);
-    obj[key] = newVal
-  }
-};
+(function() {
+    function watch(target, callback) {
 
-const proxy = new Proxy(obj, handler);
+        const proxy = new Proxy(target, {
+            get: function(obj, prop) {
+                return obj[prop];
+            },
+            set: function(obj, prop, value) {
+                obj[prop] = value;
+                callback(prop, value);
+            }
+        });
 
-      proxy.name; // getter name thisWeb
-      proxy.age = 180 // setter age 18 180
+        return proxy;
+    }
+
+    this.watch = watch;
+})()
+
+let counterProxy = watch(count, function(key, newValue) {
+    if (key === 'value') container.innerHTML = newValue;
+    // else 可以針對其他屬性去做操作
+})
+
+button.addEventListener("click", function() {
+    counterProxy.value += 1
+});
+
+counterProxy.value++
     </script>
   </body>
 </html>
