@@ -142,21 +142,26 @@ Person.prototype.sayName = function() {
 function Wang(id) {
   this.id = id;
 }
-Wang.prototype = new Person();
 
+// Wang 繼承 Person
+Wang.prototype = new Person();
+// 記得設置 constructor 屬性指回構造函式本身
+Wang.prototype.constructor = Wang;
 
 let wang1 = new Wang(1);
 wang1.sayName(); // 小王
 console.log(wang1.id) // 1
 
 ```
-小王1號在找名字時會先找自己的構造函數(Wang)，找不到就往自己的原型物件找(Wang.prototype === Person) 
+小王1號在找名字時會先找自己的構造函式(Wang)，找不到就往自己的原型物件找(Wang.prototype === Person)。
 
-又找不到就只好找原型物件的原型物件(Person.prototype)，最後找到了，這就是**原型鏈**和**繼承**  
+又找不到就只好找原型物件的原型物件(Person.prototype)，最後找到了，這就是**原型鏈**和**繼承**。
 
 **Wang 繼承了 Person 的屬性和方法。**
 
 簡單說，繼承就是一個構造函數的**原型是另一個構造函數**，就會繼承其屬性和函數。
+
+不過要記得手動設置 `Wang.prototype.constructor = Wang;`，不然 可能會導致預期之外的錯誤。
 
 ## 原型與繼承關係
 原型與實例的關係可以通過用 `instanceof` 操作符來確定
@@ -200,6 +205,8 @@ function Wang(age, id){
 
 // 繼承函數
 Wang.prototype = new Person(); 
+// 記得設置 constructor 屬性指回構造函式本身
+Wang.prototype.constructor = Wang;
 
 let Wang1 = new Wang(20, 1); 
 Wang1.hobbies.push('game') 

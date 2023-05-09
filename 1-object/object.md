@@ -500,5 +500,3 @@ Person.prototype.hobbits = [coding, design]
 ### 類繼承
 
 
-ig 的寫法感覺可以直接比較 class 和 構造函數的不同  
-直接兩個放在一起比較 像上面那樣 在慢慢拆解

@@ -1,7 +1,7 @@
 # 如何操作 DOM
 上篇講了 DOM 是什麼，接著來看看要如何操作 DOM 吧。
 
-## 如何獲取 DOM
+## 如何獲取 DOM　元素
 在開始操作之前，總要先獲取 DOM 吧，JS 提供多種獲取 DOM 的方法，可以分為
 1. 透過 id / class 獲取
   - `getElementById()`
@@ -14,9 +14,11 @@
   - `querySelector()`
   - `querySelectorAll()` 
 
+這些方法或得到的東西被稱為 **DOM 元素**，所以嚴格來說，DOM 是一個介面，用來提供一些方法操作 HTML 元素，而這裡獲取到的 DOM 元素叫做 **DOM 元素節點(DOM node)**，這部分下次再來聊聊。
+
 因為獲取 DOM 的方法存在 document 這個 JS 內置的物件內，所以在獲取 DOM 元素時，都要在前面加上 `document` 來使用。
 
-### 1. 透過 id / class 獲取 DOM
+### 1. 透過 id / class 獲取 DOM 元素
 
 可以利用 `getElementById()` 來獲取指定 id 的 HTML 元素:
 
@@ -65,7 +67,7 @@ console.log(divs[1].innerText); // 2
 
 和 `getElementsByClassName` 一樣，獲取的 DOM 是個偽陣列。
 
-### 3. 透過表單元素的 name 屬性獲取
+### 3. 透過表單元素的 name 屬性獲取 DOM 元素
 這個方法適用於有表單元素時，可以用 `getElementsByName()` 來獲取 DOM 元素
 ```html
 <form action="">
@@ -79,7 +81,7 @@ console.log(userEmail[0].value) // kkk@gmail.com
 ```
 因為獲取的是 input 元素，所以要用 value 代替 innerText 喔，所有的表單元素都會用 value 來獲取用戶輸入的值喔。
 
-### 4. 透過 CSS 選擇器來獲取 DOM
+### 4. 透過 CSS 選擇器來獲取 DOM 元素
 
 到這邊你可能會覺得，這麼多獲取的方法也太麻煩了吧，所以後來 JS 推出了新的方法，可以利用 CSS 選擇器來選擇，這樣就不用記這麼多的方法。
 
@@ -119,7 +121,7 @@ console.log(myDivClass[1].innerText); // 456
 const divs = document.querySelector('div')
 ```
 
-## 操作 DOM 物件的內文
+## 操作 DOM 元素的內文
 更改 DOM 物件內文的方式有三種:
 1. `innerText`
 2. `innerHTML`
@@ -190,7 +192,7 @@ const checkInput = document.querySeletor('.checkInput');
 console.log(checkInput.checked) // true 或 false
 ```
 
-## 操作 DOM 的樣式
+## 操作 DOM 元素的樣式
 我們可以直接在 JS 用 DOM 來操作樣式，使用方法為 `xxx.style.xxx = xxx`:
 
 ```html
@@ -243,7 +245,7 @@ box.className = 'active';
 要注意，這樣會把原本的類名也覆蓋掉。
 
 
-## 操作 DOM 屬性
+## 操作 DOM 元素屬性
 除了修改內文、樣式、類名，我們也可以操作屬性，有三種方法:
 1. `getAttribute()` : 獲取屬性
 2. `setAttribute()` : 設置屬性
@@ -310,4 +312,7 @@ a.dataset.myAttribute = 123;
 這樣自訂義的屬性會在前面增加 `data-*` 字樣，可以打開 F12 觀察自己增加的屬性會變成 `data-myAttribute`，這樣可以看出哪些是自己新增的屬性。
 
 ## 小結
-今天說了 DOM 物件的獲取、修改它的各種方法，其實 DOM 就是把 HTML 元素轉成 JS 物件來讓開發人員修改，下一篇會來繼續講如何增加、刪除 DOM 元素。
+今天說了什麼是 DOM 物件，以及獲取和修改它的各種方法，其實 DOM 就是把 HTML 元素轉成 JS 物件來讓開發人員修改，下一篇會來繼續講如何增加、刪除 DOM 元素。
+
+## 推薦閱讀
+<a href="https://thisweb.tech/js-event-loop/" target="_blank" rel="noopener">JS Event Loop - 面試超愛考的事件循環</a>
