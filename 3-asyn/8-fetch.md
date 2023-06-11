@@ -1,14 +1,15 @@
 # 如何用 fetch 串接 api
 
-在之前幾篇文章提到了同步非同步和 promise 的觀念
-今天來試著實戰非同步用 fetch 串接資料吧！
+上次用 JS 內建的 XMLHttpRequest 串接 api，但因為過程很麻煩，所以後來 JS 提供了新的串接方式，也就是 fetch！
+今天來試著實戰用 fetch 串接 api 吧！
 
+## 甚麼是 fetch
 fetch　是原生 js 提供的函數，他可以很方便的去串接 api
 那甚麼是 api 呢？　
 簡單說就是伺服器提供一個位置，讓前端可以去取得後端的資料，而這個位置通常是一個網址。
 
 網路上有很多免費的 api 可以讓我們練習從前端拿到後端的資料。
-我們今天使用 JSONplaceholder 來練習，他提供假資料讓我們獲取。
+我們今天一樣使用 JSONplaceholder 來練習，他提供假資料讓我們免費獲取和練習。
 
 開始前，我們先來了解一下 fetch 要如何使用。
 
@@ -31,7 +32,7 @@ fetch 會回傳一個 Promise，所以我們可以用 `.then()` 來取得資料�
 
 而 response 通常代表是後端回傳的結果。
 
-![fetch1](1.jpg)
+![fetch1](./images/fetch1.jpg)
 
 這是它回傳回來的資料，我們先不用全部看懂，只要先知道真正的資料在 body 裡面，不過 body 為甚麼寫 ReadableStream 呢？
 
@@ -71,6 +72,9 @@ fetch('https://jsonplaceholder.typicode.com/posts/1')
     body.innerText = json.body;
   });
 ```
+成果 👇
+
+![fetchResponse](./images/ajax-response.png)
 
 ## 如何在 get 方法中帶入參數
 有時候我們會要傳入一些參數來獲取特定的資料，例如我們想取得 id = 2 的文章，就可以像這樣使用：
@@ -123,7 +127,7 @@ fetch('https://jsonplaceholder.typicode.com/posts', {
 
 我們 post 資料給伺服器後，它會回傳一些資料讓我們判斷我們是否有 post 成功，所以最後也要用 `.then()` 來檢查。
 
-![post response](2.png)
+![post response](image/../images/fetch2.png)
 
 可以發現它回傳了我們 post 的內容，這樣就可以判斷後端是否有接收到正確的內容了。
 
@@ -166,4 +170,4 @@ const post = fetch('https://jsonplaceholder.typicode.com/post/100')
 大家可以稍微記一下喔，這樣才能根據情況做出不同的處理。
 
 ## 小結
-今天分享了如何用 fetch 來串接 api，你也可以上網找一些免費的 api 來練習，這裡推薦一個可愛的 api - cat api，他可以獲取一堆貓咪的照片，至於喜歡狗狗的可以搜尋 dog api 來練習！
+今天分享了如何用 fetch 來串接 api，你也可以上網找一些免費的 api 來練習，這裡推薦一個可愛的 api -> cat api，他可以獲取一堆貓咪的照片，至於喜歡狗狗的可以搜尋 dog api 來練習！
